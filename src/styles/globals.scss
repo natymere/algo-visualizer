@@ -1,0 +1,46 @@
+:root {
+  // color-scheme: light dark;
+  --background-color: white;
+  --text-primary: black;
+  --text-secondary: royalblue;
+  --accent-color: purple;
+  --font-family: monospace;
+  --primary: #fff;
+}
+
+[data-theme='dark'] {
+  --background-color: black;
+  --text-primary: white;
+  --text-secondary: grey;
+  --accent-color: darkred;
+}
+
+$font-size-base: 0.925rem;
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell,
+    Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+html,
+body {
+  font-size: $font-size-base;
+  padding: 0;
+  margin: 0;
+  accent-color: var(--accent-color);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.main {
+  min-height: calc(100vh - 80px);
+  padding: 1rem;
+}
