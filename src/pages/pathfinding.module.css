@@ -1,0 +1,21 @@
+.heading {
+  padding-bottom: 1rem;
+}
+
+.selectGroup {
+  margin-bottom: 1rem;
+}
+
+.buttonGroup {
+  margin-bottom: 1rem;
+}
+
+.label {
+  padding-right: 10px;
+}
+
+.grid {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

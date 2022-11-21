@@ -7,6 +7,7 @@ type Button = {
   onClick?: any;
   buttonStyle?: any;
   buttonSize?: any;
+  style?: any;
   children?: React.ReactNode;
 };
 
@@ -19,22 +20,16 @@ export default function Button({
   onClick,
   buttonStyle = STYLES[0],
   buttonSize = SIZES[0],
+  style = {},
 }: Button) {
   return (
-    <>
-      <Link href="/">
-        <button
-          className={`${styles[buttonStyle]} ${styles[buttonSize]}`}
-          type={type}
-          onClick={onClick}
-        >
-          {children}
-        </button>
-      </Link>
-    </>
+    <button
+      className={`${styles.btn} ${styles[buttonStyle]} ${styles[buttonSize]}`}
+      style={style}
+      type={type}
+      onClick={onClick}
+    >
+      {children}
+    </button>
   );
-}
-
-Button.getLayout = function getLayout() {
-  
 }

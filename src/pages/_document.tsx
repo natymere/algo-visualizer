@@ -1,5 +1,5 @@
 import { Html, Head, Main, NextScript } from 'next/document';
-import Nav from '../components/nav.component';
+import Nav from '../layouts/nav/nav.component';
 
 export default function Document() {
   return (

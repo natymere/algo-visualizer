@@ -1,5 +1,5 @@
-import Layout from '../components/layout.component';
-import Nav from '../components/nav.component';
+import Layout from '../layouts/layout.component';
+import Nav from '../layouts/nav/nav.component';
 
 export default function Sort() {
   return (

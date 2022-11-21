@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import styles from '../styles/base.module.css';
-import Layout from '../components/layout.component';
+import Layout from '../layouts/layout.component';
 
 export default function Index() {
   return (

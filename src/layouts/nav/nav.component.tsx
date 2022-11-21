@@ -1,9 +1,8 @@
-import { faBars, faHamburger, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import clsx from 'clsx';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import Button from './button.component';
 import navStyle from './nav.module.scss';
 
 export default function Nav() {
