@@ -14,7 +14,7 @@ export function Test() {
 }
 
 const Data = z.object({
-  id: z.string(),
+  id: z.string().optional(),
   name: z.string(),
 });
 

@@ -44,3 +44,42 @@ a {
   min-height: calc(100vh - 80px);
   padding: 1rem;
 }
+
+.node {
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  outline: 1px solid rgba(63, 67, 67, 0.7);
+}
+
+.endNode {
+  background: url('/marker.svg');
+  background-size: cover;
+}
+
+.startNode {
+  background: url('/user.svg');
+  background-size: cover;
+}
+
+.visitedNode {
+  animation-name: animateSearch;
+  animation-direction: alternate;
+  animation-duration: 1.5s;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
+
+.rightArrow {
+  background: url('/arrow-right.svg');
+  background-size: cover;
+}
+
+@keyframes animateSearch {
+  from {
+    background-color: rgba(255, 0, 47, 0.513);
+  }
+  to {
+    background-color: rgba(0, 255, 174, 0.475);
+  }
+}

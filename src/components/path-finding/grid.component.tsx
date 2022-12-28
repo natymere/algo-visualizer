@@ -3,20 +3,13 @@ import Node from './node.component';
 
 export type TGrid = Array<Array<TNode>>;
 
-interface GridBoard {
-  startNode: [number, number];
-  endNode: [number, number];
-  grid: TGrid;
-}
-
 export default function Grid({ grid }: { grid: TGrid }) {
-  console.log(grid);
   return (
     <div>
       {grid.map((rowNodes, idx) => (
         <div key={idx}>
           {rowNodes.map((node) => {
-            const { isFinish, isStart, row, col, ...rest } = node;
+            const { isFinish, isStart, row, col, previousNode: previousNode, ...rest } = node;
             return (
               <Node
                 key={`row${row}-col${col}`}
@@ -24,6 +17,7 @@ export default function Grid({ grid }: { grid: TGrid }) {
                 isStart={isStart}
                 row={row}
                 col={col}
+                previousNode={previousNode}
                 {...rest}
               ></Node>
             );

@@ -33,7 +33,14 @@
 .btnMedium:hover,
 .btnLarge:hover {
   transition: all 0.3s ease-out;
-  background: #fff;
-  color: #242424;
-  transition: 250ms;
+  background-color: #242424;
+  color: #fff;
+}
+
+.btnMedium:disabled,
+.btnLarge:disabled,
+.btnMedium[disabled],
+.btnLarge[disabled] {
+  opacity: 0.6;
+  pointer-events: none;
 }

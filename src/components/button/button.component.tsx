@@ -8,6 +8,7 @@ type Button = {
   buttonStyle?: any;
   buttonSize?: any;
   style?: any;
+  disabled?: boolean;
   children?: React.ReactNode;
 };
 
@@ -21,9 +22,11 @@ export default function Button({
   buttonStyle = STYLES[0],
   buttonSize = SIZES[0],
   style = {},
+  disabled = false,
 }: Button) {
   return (
     <button
+      disabled={disabled}
       className={`${styles.btn} ${styles[buttonStyle]} ${styles[buttonSize]}`}
       style={style}
       type={type}

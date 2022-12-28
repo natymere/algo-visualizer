@@ -1,20 +1,20 @@
 import clsx from 'clsx';
-import { useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { TNode } from '../../pages/pathfinding';
 
 import styles from './node.module.css';
 
 export default function Node(props: TNode) {
-  const [nodeState, setNodeState] = useState({
-    row: null,
-    col: null,
-    distance: null,
-    visited: null,
-    iswall: null,
-    prevCell: null,
-    cell: null,
+  const [nodeState, setNodeState] = useState<TNode>({
+    row: props.row,
+    col: props.col,
+    baseDistance: props.distanceFromStart,
+    visited: props.visited,
+    isWall: props.isWall,
     isStart: props.isStart,
     isFinish: props.isFinish,
+    distanceFromStart: props.distanceFromStart,
+    previousNode: null,
     onMouseEnter: null,
     onMouseUp: null,
     onTouchUp: null,
@@ -23,12 +23,33 @@ export default function Node(props: TNode) {
     onTouchEnd: null,
   });
 
+  useEffect(() => {
+    setNodeState((state) => ({
+      ...state,
+      distanceFromStart: props.distanceFromStart,
+      previousNode: props.previousNode,
+      visited: props.visited,
+      isWall: props.isWall,
+      isStart: props.isStart,
+      isFinish: props.isFinish,
+    }));
+  }, [
+    props.distanceFromStart,
+    props.previousNode,
+    props.visited,
+    props.isWall,
+    props.isStart,
+    props.isFinish,
+  ]);
+
+  const { row, col } = nodeState;
   return (
     <div
+      id={`row${row}-col${col}`}
       className={clsx(
-        styles.node,
-        nodeState.isStart ? styles.startNode : null,
-        nodeState.isFinish ? styles.endNode : null
+        'node',
+        nodeState.isStart ? 'startNode' : null,
+        nodeState.isFinish ? 'endNode' : null
       )}
     ></div>
   );
