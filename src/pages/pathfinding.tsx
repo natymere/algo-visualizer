@@ -10,18 +10,12 @@ export type TNode = {
   row: number;
   col: number;
   baseDistance: number;
-  visited: any;
-  isWall: any;
+  visited: boolean;
+  isWall: boolean;
   isStart: boolean;
   isFinish: boolean;
   distanceFromStart: number;
   previousNode: TNode | null;
-  onMouseEnter: any;
-  onMouseUp: any;
-  onTouchUp: any;
-  onTouchStart: any;
-  onTouchMove: any;
-  onTouchEnd: any;
 };
 
 export type TGridState = {
@@ -34,6 +28,8 @@ export type TGridState = {
   endPos: [number, number];
   isAnimating: boolean;
   isAnimated: boolean;
+  isChangingStartNode: boolean;
+  isChangingFinishNode: boolean;
 };
 
 const options = [
@@ -58,10 +54,12 @@ export default function Pathfinding() {
     endPos: END_POS,
     isAnimating: false,
     isAnimated: false,
+    isChangingStartNode: false,
+    isChangingFinishNode: false,
   });
-  // const [isAnimating, setIsAnimating] = useState(false);
+
   const timeoutListRef = useRef<number[]>([]);
-  const createNode = (row: number, col: number, startPos: number[], endPos: number[]) => {
+  const createNode = (row: number, col: number, startPos: number[], endPos: number[]): TNode => {
     return {
       row,
       col,
@@ -72,12 +70,6 @@ export default function Pathfinding() {
       isFinish: row === endPos[1] && col === endPos[0],
       distanceFromStart: Infinity,
       previousNode: null,
-      onMouseEnter: null,
-      onMouseUp: null,
-      onTouchUp: null,
-      onTouchStart: null,
-      onTouchMove: null,
-      onTouchEnd: null,
     };
   };
 
@@ -111,15 +103,11 @@ export default function Pathfinding() {
     }
   };
 
-  const handleMouseDown = (grid: TGrid, row: any, col: any) => {
-    if (gridState.isAnimated || gridState.isAnimating) return;
-  };
-
   // does not reset grid
   const handleClearPath = () => {};
 
   const animateVisitedNodes = () => {
-    setGridState((gridState) => ({ ...gridState, isAnimating: true }));
+    setGridState((state) => ({ ...state, isAnimating: true }));
     // get state
     const { grid, startPos, endPos } = gridState;
     const startNode = grid[startPos[1]][startPos[0]];
@@ -128,13 +116,18 @@ export default function Pathfinding() {
     const visitedNodes = dijkstras(grid, startNode, endNode);
     const paths = getShortestPath(endNode);
 
-    // animate searching effect
     const domNodes: HTMLElement[] = [];
+    // animate searching effect
     for (let i = 0; i < visitedNodes.length; i++) {
       const id = window.setTimeout(() => {
         const node = visitedNodes[i];
         let domNode = document.querySelector<HTMLElement>(`#row${node.row}-col${node.col}`);
         if (domNode !== null) {
+          const isStartNode = domNode.className.includes('startNode');
+          const isEndNode = domNode.className.includes('endNode');
+          if (isStartNode || isEndNode) {
+            return;
+          }
           domNodes.push(domNode);
           domNode.classList.add('visitedNode');
         }
@@ -181,7 +174,90 @@ export default function Pathfinding() {
       grid: grid,
       isAnimating: false,
       isAnimated: false,
+      startPos: START_POS,
+      endPos: END_POS,
     }));
+  };
+
+  const getGridWithNewStartNode = (grid: TGrid, row: number, col: number) => {
+    let gridCopy = [...grid];
+    const node = gridCopy[row][col];
+    const newNode = { ...node, isStart: !node.isStart };
+    gridCopy[row][col] = newNode;
+    return gridCopy;
+  };
+
+  const getGridWithNewFinishNode = (grid: TGrid, row: number, col: number) => {
+    let gridCopy = [...grid];
+    const node = gridCopy[row][col];
+    const newNode = { ...node, isFinish: !node.isFinish };
+    gridCopy[row][col] = newNode;
+    return gridCopy;
+  };
+
+  const getGridWithNewWallNode = (grid: TGrid, row: number, col: number) => {
+    let gridCopy = [...grid];
+    const node = gridCopy[row][col];
+    const newNode = { ...node, isWall: !node.isWall };
+    gridCopy[row][col] = newNode;
+    return gridCopy;
+  };
+
+  const handleMouseDown = (node: TNode, row: number, col: number) => {
+    if (gridState.isAnimated || gridState.isAnimating) return;
+
+    if (node.isStart) {
+      const newGrid = getGridWithNewStartNode(gridState.grid, row, col);
+      setGridState((state) => ({
+        ...state,
+        grid: newGrid,
+        isChangingStartNode: true,
+      }));
+    } else if (node.isFinish) {
+      const newGrid = getGridWithNewFinishNode(gridState.grid, row, col);
+      setGridState((state) => ({
+        ...state,
+        grid: newGrid,
+        isChangingFinishNode: true,
+      }));
+    } else {
+      const newGrid = getGridWithNewWallNode(gridState.grid, row, col);
+      setGridState((state) => ({
+        ...state,
+        grid: newGrid,
+      }));
+    }
+  };
+
+  const handleMouseUp = (node: TNode, row: number, col: number) => {
+    if (gridState.isAnimated || gridState.isAnimating) return;
+    if (gridState.isChangingStartNode) {
+      const newGrid = getGridWithNewStartNode(gridState.grid, row, col);
+      setGridState((state) => ({
+        ...state,
+        grid: newGrid,
+        startPos: [col, row],
+        isChangingStartNode: false,
+      }));
+    }
+
+    if (gridState.isChangingFinishNode) {
+      const newGrid = getGridWithNewFinishNode(gridState.grid, row, col);
+      setGridState((state) => ({
+        ...state,
+        grid: newGrid,
+        endPos: [col, row],
+        isChangingFinishNode: false,
+      }));
+    }
+  };
+
+  const handleMouseEnter = (node: TNode, row: number, col: number) => {
+    if (gridState.isChangingStartNode) {
+    }
+    console.log(node);
+    console.log(row);
+    console.log(col);
   };
 
   const { isAnimating, isAnimated } = gridState;
@@ -224,7 +300,13 @@ export default function Pathfinding() {
           </Button>
         </div>
         <div className={styles.grid}>
-          <Grid key={gridState.key} grid={gridState.grid}></Grid>
+          <Grid
+            key={gridState.key}
+            grid={gridState.grid}
+            onMouseDown={handleMouseDown}
+            onMouseEnter={handleMouseEnter}
+            onMouseUp={handleMouseUp}
+          ></Grid>
         </div>
       </div>
     </Layout>

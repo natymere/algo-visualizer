@@ -1,56 +1,65 @@
 import clsx from 'clsx';
+import { min } from 'lodash-es';
 import { useEffect, useLayoutEffect, useState } from 'react';
 import { TNode } from '../../pages/pathfinding';
 
 import styles from './node.module.css';
 
-export default function Node(props: TNode) {
-  const [nodeState, setNodeState] = useState<TNode>({
-    row: props.row,
-    col: props.col,
-    baseDistance: props.distanceFromStart,
-    visited: props.visited,
-    isWall: props.isWall,
-    isStart: props.isStart,
-    isFinish: props.isFinish,
-    distanceFromStart: props.distanceFromStart,
-    previousNode: null,
-    onMouseEnter: null,
-    onMouseUp: null,
-    onTouchUp: null,
-    onTouchStart: null,
-    onTouchMove: null,
-    onTouchEnd: null,
-  });
+type TNodeProps = {
+  node: TNode;
+  row: number;
+  col: number;
+  baseDistance: number;
+  visited: boolean;
+  isWall: any;
+  isStart: boolean;
+  isFinish: boolean;
+  distanceFromStart: number;
+  previousNode: TNode | null;
+  onMouseEnter?: any;
+  onMouseDown?: any;
+  onMouseUp?: any;
+  onTouchUp?: any;
+  onTouchStart?: any;
+  onTouchMove?: any;
+  onTouchEnd?: any;
+};
 
-  useEffect(() => {
-    setNodeState((state) => ({
-      ...state,
-      distanceFromStart: props.distanceFromStart,
-      previousNode: props.previousNode,
-      visited: props.visited,
-      isWall: props.isWall,
-      isStart: props.isStart,
-      isFinish: props.isFinish,
-    }));
-  }, [
-    props.distanceFromStart,
-    props.previousNode,
-    props.visited,
-    props.isWall,
-    props.isStart,
-    props.isFinish,
-  ]);
+export default function Node(props: TNodeProps) {
+  const {
+    node,
+    row,
+    col,
+    baseDistance,
+    visited,
+    isWall,
+    isStart,
+    isFinish,
+    distanceFromStart,
+    previousNode,
+    onMouseEnter,
+    onMouseDown,
+    onMouseUp,
+    onTouchUp,
+    onTouchStart,
+    onTouchMove,
+    onTouchEnd,
+  } = props;
 
-  const { row, col } = nodeState;
+  const className = clsx(
+    'node',
+    isStart ? 'startNode' : null,
+    isFinish ? 'endNode' : null,
+    isWall ? 'wallNode' : null
+  );
+
   return (
     <div
       id={`row${row}-col${col}`}
-      className={clsx(
-        'node',
-        nodeState.isStart ? 'startNode' : null,
-        nodeState.isFinish ? 'endNode' : null
-      )}
+      className={className}
+      onMouseDown={() => onMouseDown(node, row, col)}
+      onMouseUp={() => onMouseUp(node, row, col)}
+      onMouseEnter={() => onMouseEnter(node, row, col)}
     ></div>
   );
 }
