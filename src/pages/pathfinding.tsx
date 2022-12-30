@@ -57,6 +57,7 @@ export default function Pathfinding() {
     isChangingStartNode: false,
     isChangingFinishNode: false,
   });
+  const dragging = useRef(false);
 
   const timeoutListRef = useRef<number[]>([]);
   const createNode = (row: number, col: number, startPos: number[], endPos: number[]): TNode => {
@@ -73,20 +74,28 @@ export default function Pathfinding() {
     };
   };
 
-  const initGrid = useCallback((rows: number, columns: number): TGrid => {
-    let grid = [] as TGrid;
-    for (let i = 0; i < rows; i++) {
-      let rowNodes = [];
-      for (let j = 0; j < columns; j++) {
-        rowNodes.push(createNode(i, j, START_POS, END_POS));
+  const initGrid = useCallback(
+    (
+      rows: number,
+      columns: number,
+      startPos: [number, number],
+      endPos: [number, number]
+    ): TGrid => {
+      let grid = [] as TGrid;
+      for (let i = 0; i < rows; i++) {
+        let rowNodes = [];
+        for (let j = 0; j < columns; j++) {
+          rowNodes.push(createNode(i, j, startPos, endPos));
+        }
+        grid.push(rowNodes);
       }
-      grid.push(rowNodes);
-    }
-    return grid;
-  }, []);
+      return grid;
+    },
+    []
+  );
 
   useEffect(() => {
-    const grid = initGrid(MIN_ROWS, MIN_COLUMNS);
+    const grid = initGrid(MIN_ROWS, MIN_COLUMNS, START_POS, END_POS);
     setGridState((state) => ({ ...state, grid: grid }));
   }, [initGrid]);
 
@@ -103,8 +112,16 @@ export default function Pathfinding() {
     }
   };
 
-  // does not reset grid
-  const handleClearPath = () => {};
+  const handleClearPath = () => {
+    const grid = initGrid(MIN_ROWS, MIN_COLUMNS, gridState.startPos, gridState.endPos);
+    setGridState((state) => ({
+      ...state,
+      key: Math.random().toString(),
+      grid: grid,
+      isAnimating: false,
+      isAnimated: false,
+    }));
+  };
 
   const animateVisitedNodes = () => {
     setGridState((state) => ({ ...state, isAnimating: true }));
@@ -164,7 +181,7 @@ export default function Pathfinding() {
   };
 
   const handleResetGrid = () => {
-    const grid = initGrid(MIN_ROWS, MIN_COLUMNS);
+    const grid = initGrid(MIN_ROWS, MIN_COLUMNS, START_POS, END_POS);
     for (const id of timeoutListRef.current) {
       window.clearTimeout(id);
     }
@@ -227,9 +244,10 @@ export default function Pathfinding() {
         grid: newGrid,
       }));
     }
+    dragging.current = true;
   };
 
-  const handleMouseUp = (node: TNode, row: number, col: number) => {
+  const handleMouseUp = (row: number, col: number) => {
     if (gridState.isAnimated || gridState.isAnimating) return;
     if (gridState.isChangingStartNode) {
       const newGrid = getGridWithNewStartNode(gridState.grid, row, col);
@@ -250,14 +268,18 @@ export default function Pathfinding() {
         isChangingFinishNode: false,
       }));
     }
+
+    dragging.current = false;
   };
 
-  const handleMouseEnter = (node: TNode, row: number, col: number) => {
-    if (gridState.isChangingStartNode) {
-    }
-    console.log(node);
-    console.log(row);
-    console.log(col);
+  const handleMouseEnter = (row: number, col: number) => {
+    if (!dragging.current) return;
+    if (gridState.isChangingFinishNode || gridState.isChangingStartNode) return;
+    const newGrid = getGridWithNewWallNode(gridState.grid, row, col);
+    setGridState((state) => ({
+      ...state,
+      grid: newGrid,
+    }));
   };
 
   const { isAnimating, isAnimated } = gridState;
@@ -291,7 +313,7 @@ export default function Pathfinding() {
             disabled={isAnimating}
             type="button"
             style={{ marginRight: '4px' }}
-            onClick={handleResetGrid}
+            onClick={handleClearPath}
           >
             Clear Path
           </Button>

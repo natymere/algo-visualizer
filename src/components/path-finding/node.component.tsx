@@ -1,9 +1,5 @@
 import clsx from 'clsx';
-import { min } from 'lodash-es';
-import { useEffect, useLayoutEffect, useState } from 'react';
 import { TNode } from '../../pages/pathfinding';
-
-import styles from './node.module.css';
 
 type TNodeProps = {
   node: TNode;
@@ -16,9 +12,9 @@ type TNodeProps = {
   isFinish: boolean;
   distanceFromStart: number;
   previousNode: TNode | null;
-  onMouseEnter?: any;
-  onMouseDown?: any;
-  onMouseUp?: any;
+  onMouseEnter: (row: number, col: number) => void;
+  onMouseDown: (node: TNode, row: number, col: number) => void;
+  onMouseUp: (row: number, col: number) => void;
   onTouchUp?: any;
   onTouchStart?: any;
   onTouchMove?: any;
@@ -58,8 +54,8 @@ export default function Node(props: TNodeProps) {
       id={`row${row}-col${col}`}
       className={className}
       onMouseDown={() => onMouseDown(node, row, col)}
-      onMouseUp={() => onMouseUp(node, row, col)}
-      onMouseEnter={() => onMouseEnter(node, row, col)}
+      onMouseUp={() => onMouseUp(row, col)}
+      onMouseEnter={() => onMouseEnter(row, col)}
     ></div>
   );
 }

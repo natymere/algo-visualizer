@@ -17,6 +17,7 @@ export function dijkstras(grid: TGrid, startNode: TNode, endNode: TNode): TNode[
     unvisited.sort((a, b) => a.distanceFromStart - b.distanceFromStart);
     let currentNode = unvisited.shift() as TNode;
     console.log(currentNode);
+    if (currentNode.isWall) continue;
     if (currentNode.distanceFromStart === Infinity) return visitedQueue;
     currentNode.visited = true;
     visitedQueue.push(currentNode);

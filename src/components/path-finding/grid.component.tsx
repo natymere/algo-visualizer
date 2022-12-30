@@ -5,9 +5,9 @@ export type TGrid = Array<Array<TNode>>;
 
 type GridProps = {
   grid: TGrid;
-  onMouseEnter?: any;
+  onMouseEnter: (row: number, col: number) => void;
   onMouseDown: (node: TNode, row: number, col: number) => void;
-  onMouseUp: (node: TNode, row: number, col: number) => void;
+  onMouseUp: (row: number, col: number) => void;
 };
 
 export default function Grid({ grid, onMouseDown, onMouseEnter, onMouseUp }: GridProps) {
@@ -41,8 +41,8 @@ export default function Grid({ grid, onMouseDown, onMouseEnter, onMouseUp }: Gri
                 previousNode={previousNode}
                 node={node}
                 onMouseDown={() => onMouseDown(node, row, col)}
-                onMouseEnter={() => onMouseEnter(node, row, col)}
-                onMouseUp={() => onMouseUp(node, row, col)}
+                onMouseEnter={() => onMouseEnter(row, col)}
+                onMouseUp={() => onMouseUp(row, col)}
               ></Node>
             );
           })}
