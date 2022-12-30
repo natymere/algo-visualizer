@@ -16,7 +16,6 @@ export function dijkstras(grid: TGrid, startNode: TNode, endNode: TNode): TNode[
     // visit unvisted node with the smallest distance from start node
     unvisited.sort((a, b) => a.distanceFromStart - b.distanceFromStart);
     let currentNode = unvisited.shift() as TNode;
-    console.log(currentNode);
     if (currentNode.isWall) continue;
     if (currentNode.distanceFromStart === Infinity) return visitedQueue;
     currentNode.visited = true;
@@ -40,7 +39,7 @@ export function dijkstras(grid: TGrid, startNode: TNode, endNode: TNode): TNode[
     }
 
     // filter to examine unvisited neighbour nodes
-    neighbourNodes.filter((node) => node.visited === false);
+    neighbourNodes = neighbourNodes.filter((node) => node.visited === false);
 
     // calculate distance for each node from start node
     for (const node of neighbourNodes) {

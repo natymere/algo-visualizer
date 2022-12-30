@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { dfs } from '../algorithms/dfs';
 import { dijkstras, getShortestPath } from '../algorithms/dijkstras';
 import Button from '../components/button/button.component';
 import Grid, { TGrid } from '../components/path-finding/grid.component';
@@ -106,9 +107,9 @@ export default function Pathfinding() {
   const handleVisualize = () => {
     if (select === '') alert('choose an option');
     else if (select === 'dijkstra') {
-      animateVisitedNodes();
+      animateVisitedNodes('dijkstra');
     } else if (select === 'dfs') {
-      alert('not implemented yet');
+      animateVisitedNodes('dfs');
     }
   };
 
@@ -123,15 +124,22 @@ export default function Pathfinding() {
     }));
   };
 
-  const animateVisitedNodes = () => {
+  const animateVisitedNodes = (algoOption: string) => {
     setGridState((state) => ({ ...state, isAnimating: true }));
     // get state
     const { grid, startPos, endPos } = gridState;
     const startNode = grid[startPos[1]][startPos[0]];
     const endNode = grid[endPos[1]][endPos[0]];
 
-    const visitedNodes = dijkstras(grid, startNode, endNode);
-    const paths = getShortestPath(endNode);
+    let visitedNodes = [] as TNode[];
+    let paths = [] as TNode[];
+    if (algoOption === 'dijkstra') {
+      visitedNodes = dijkstras(grid, startNode, endNode);
+      paths = getShortestPath(endNode);
+    } else if (algoOption === 'dfs') {
+      visitedNodes = dfs(grid, startNode, endNode);
+      console.log('visitedNodes', visitedNodes);
+    }
 
     const domNodes: HTMLElement[] = [];
     // animate searching effect
@@ -139,6 +147,7 @@ export default function Pathfinding() {
       const id = window.setTimeout(() => {
         const node = visitedNodes[i];
         let domNode = document.querySelector<HTMLElement>(`#row${node.row}-col${node.col}`);
+        console.log(domNode);
         if (domNode !== null) {
           const isStartNode = domNode.className.includes('startNode');
           const isEndNode = domNode.className.includes('endNode');
@@ -158,7 +167,8 @@ export default function Pathfinding() {
       for (let i = 0; i < domNodes.length; i++) {
         const domNode = domNodes[i];
         if (domNode !== null) {
-          domNode.classList.remove('visitedNode');
+          // temp
+          // domNode.classList.remove('visitedNode');
         }
       }
       animathPath(paths);
