@@ -22,32 +22,12 @@ type TNodeProps = {
 };
 
 export default function Node(props: TNodeProps) {
-  const {
-    node,
-    row,
-    col,
-    baseDistance,
-    visited,
-    isWall,
-    isStart,
-    isFinish,
-    distanceFromStart,
-    previousNode,
-    onMouseEnter,
-    onMouseDown,
-    onMouseUp,
-    onTouchUp,
-    onTouchStart,
-    onTouchMove,
-    onTouchEnd,
-  } = props;
+  const { node, row, col, isWall, isStart, isFinish, onMouseEnter, onMouseDown, onMouseUp } = props;
 
-  const className = clsx(
-    'node',
-    isStart ? 'startNode' : null,
-    isFinish ? 'endNode' : null,
-    isWall ? 'wallNode' : null
-  );
+  let className = 'node';
+  if (isStart) className = 'node startNode';
+  else if (isFinish) className = 'node endNode';
+  else if (isWall) className = 'node wallNode';
 
   return (
     <div

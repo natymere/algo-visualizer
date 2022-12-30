@@ -105,7 +105,7 @@ export default function Pathfinding() {
   };
 
   const handleVisualize = () => {
-    if (select === '') alert('choose an option');
+    if (select === '') alert('choose an option.');
     else if (select === 'dijkstra') {
       animateVisitedNodes('dijkstra');
     } else if (select === 'dfs') {
@@ -138,7 +138,12 @@ export default function Pathfinding() {
       paths = getShortestPath(endNode);
     } else if (algoOption === 'dfs') {
       visitedNodes = dfs(grid, startNode, endNode);
-      console.log('visitedNodes', visitedNodes);
+      paths = visitedNodes;
+    }
+
+    if (paths.length === 0) {
+      alert('No path found.');
+      return;
     }
 
     const domNodes: HTMLElement[] = [];
@@ -167,8 +172,7 @@ export default function Pathfinding() {
       for (let i = 0; i < domNodes.length; i++) {
         const domNode = domNodes[i];
         if (domNode !== null) {
-          // temp
-          // domNode.classList.remove('visitedNode');
+          domNode.classList.remove('visitedNode');
         }
       }
       animathPath(paths);
