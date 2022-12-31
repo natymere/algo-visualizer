@@ -46,10 +46,19 @@ function partition(
   animationTasks: QuickSortAnimateTask[]
 ) {
   while (left <= right) {
+    animationTasks.push({
+      action: 'compare',
+      indexA: left,
+      indexB: Math.floor((left + right) / 2),
+    });
     while (arr[left] < pivot) {
       left++;
     }
-
+    animationTasks.push({
+      action: 'compare',
+      indexA: left,
+      indexB: Math.floor((left + right) / 2),
+    });
     while (arr[right] > pivot) {
       right--;
     }

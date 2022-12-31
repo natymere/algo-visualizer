@@ -104,6 +104,7 @@ export default function Sort() {
       setAnimation((state) => ({ ...state, isSorting: true }));
     } else if (selectedSort === 'mergesort') {
       const { animationTasks, speed, complexity, sortName, timestamp } = mergeSortAnimation(bars);
+      setCardList((state) => [...state, { sortName, complexity, speed, timestamp }]);
       setAnimation((state) => ({ ...state, isSorting: true }));
       performMergeSortAnimation(domBars, animationTasks);
     }
@@ -115,23 +116,29 @@ export default function Sort() {
   ) {
     for (let i = 0; i < tasks.length; i++) {
       const task = tasks[i];
+      let domBarIndexA = domBars.item(task.indexA);
+      let domBarIndexB = domBars.item(task.indexB);
       if (task.action === 'compare') {
-        const bgColorIndexA = domBars.item(task.indexA).style.backgroundColor;
-        const bgColorIndexB = domBars.item(task.indexB).style.backgroundColor;
+        const bgColorIndexA = domBarIndexA.style.backgroundColor;
+        const bgColorIndexB = domBarIndexB.style.backgroundColor;
         window.setTimeout(() => {
-          domBars.item(task.indexA).style.backgroundColor = COMPARE_COLOR;
-          domBars.item(task.indexB).style.backgroundColor = COMPARE_COLOR;
+          domBarIndexA.style.backgroundColor = COMPARE_COLOR;
+          domBarIndexB.style.backgroundColor = COMPARE_COLOR;
         }, i * SPEED);
 
         window.setTimeout(() => {
-          domBars.item(task.indexA).style.backgroundColor = bgColorIndexA;
-          domBars.item(task.indexB).style.backgroundColor = bgColorIndexB;
+          domBarIndexA.style.backgroundColor = bgColorIndexA;
+          domBarIndexB.style.backgroundColor = bgColorIndexB;
         }, (i + 1) * SPEED);
       } else if (task.action === 'swap') {
         window.setTimeout(() => {
-          let temph = domBars.item(task.indexA).style.height;
-          domBars.item(task.indexA).style.height = domBars.item(task.indexB).style.height;
-          domBars.item(task.indexB).style.height = temph;
+          let temph = domBarIndexA.style.height;
+          domBarIndexA.style.height = domBarIndexB.style.height;
+          domBarIndexB.style.height = temph;
+          // swap tooltip
+          let tempText = domBarIndexA.childNodes[0].textContent;
+          domBarIndexA.childNodes[0].textContent = domBarIndexB.childNodes[0].textContent;
+          domBarIndexB.childNodes[0].textContent = tempText;
         }, i * SPEED);
       }
     }
@@ -155,12 +162,30 @@ export default function Sort() {
   ) {
     for (let i = 0; i < tasks.length; i++) {
       const task = tasks[i];
+      let domBarIndexA = domBars.item(task.indexA);
+      let domBarIndexB = domBars.item(task.indexB);
       if (task.action === 'compare') {
+        const bgColorIndexA = domBarIndexA.style.backgroundColor;
+        const bgColorIndexB = domBarIndexB.style.backgroundColor;
+        window.setTimeout(() => {
+          domBarIndexA.style.backgroundColor = COMPARE_COLOR;
+          domBarIndexB.style.backgroundColor = COMPARE_COLOR;
+        }, i * SPEED);
+
+        window.setTimeout(() => {
+          domBarIndexA.style.backgroundColor = bgColorIndexA;
+          domBarIndexB.style.backgroundColor = bgColorIndexB;
+        }, (i + 1) * SPEED);
       } else if (task.action === 'swap') {
         window.setTimeout(() => {
-          let temph = domBars.item(task.indexA).style.height;
-          domBars.item(task.indexA).style.height = domBars.item(task.indexB).style.height;
-          domBars.item(task.indexB).style.height = temph;
+          let temph = domBarIndexA.style.height;
+          domBarIndexA.style.height = domBarIndexB.style.height;
+          domBarIndexB.style.height = temph;
+
+          // swap tooltip
+          let tempText = domBarIndexA.childNodes[0].textContent;
+          domBarIndexA.childNodes[0].textContent = domBarIndexB.childNodes[0].textContent;
+          domBarIndexB.childNodes[0].textContent = tempText;
         }, i * SPEED);
       }
     }
@@ -185,6 +210,19 @@ export default function Sort() {
     for (let i = 0; i < tasks.length; i++) {
       const task = tasks[i];
       if (task.action === 'compare') {
+        let domBarIndexA = domBars.item(task.indexA);
+        let domBarIndexB = domBars.item(task.indexB);
+        const bgColorIndexA = domBarIndexA.style.backgroundColor;
+        const bgColorIndexB = domBarIndexB.style.backgroundColor;
+        window.setTimeout(() => {
+          domBarIndexA.style.backgroundColor = COMPARE_COLOR;
+          domBarIndexB.style.backgroundColor = COMPARE_COLOR;
+        }, i * SPEED);
+
+        window.setTimeout(() => {
+          domBarIndexA.style.backgroundColor = bgColorIndexA;
+          domBarIndexB.style.backgroundColor = bgColorIndexB;
+        }, (i + 1) * SPEED);
       } else if (task.action === 'update') {
         window.setTimeout(() => {
           let domBar = domBars.item(task.index);
@@ -193,6 +231,18 @@ export default function Sort() {
         }, i * SPEED);
       }
     }
+
+    // complete animation
+    window.setTimeout(() => {
+      setAnimation((state) => ({ ...state, sorting: false, isSorted: true }));
+    }, tasks.length * SPEED);
+
+    window.setTimeout(() => {
+      domBars.forEach((dom) => {
+        dom.style.backgroundColor = COMPLETE_COLOR;
+        dom.style.opacity = '0.5';
+      });
+    }, tasks.length * SPEED);
   }
 
   const { isSorted, isSorting } = animation;

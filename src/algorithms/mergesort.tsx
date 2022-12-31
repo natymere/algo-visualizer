@@ -1,5 +1,13 @@
-export interface MergeSortAnimateTask {
-  action: 'compare' | 'update';
+export type MergeSortAnimateTask = MergeSortAnimateTaskCompare | MergeSortAnimateTaskUpdate;
+
+export interface MergeSortAnimateTaskCompare {
+  action: 'compare';
+  indexA: number;
+  indexB: number;
+}
+
+interface MergeSortAnimateTaskUpdate {
+  action: 'update';
   index: number;
   val: number;
 }
@@ -30,6 +38,7 @@ export function merge(
   let j = mid + 1;
   let p = start;
   while (i <= mid && j <= end) {
+    animationTasks.push({ action: 'compare', indexA: i, indexB: j });
     if (tempArr[j] >= tempArr[i]) {
       animationTasks.push({ action: 'update', index: p, val: tempArr[i] });
       resultArr[p] = tempArr[i];
