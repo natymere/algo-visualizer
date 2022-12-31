@@ -1,7 +1,11 @@
 # Algo Visualizer
 #### Video Demo:  [demo](https://www.youtube.com/watch?v=GgZ-NntpUIU)
+
+#### Deployment: https://algo-visualizer-seven.vercel.app/
 #### Description:
 Algo Visualizer is an application that helps starter to understand the different algorithms that can be applied to sorting and searching. There are two parts to this application where One can explore path finding algorithms and also explore various sorting algorithms. 
+
+
 
 Below are the following algorithms that have visualization implemented:
 ##### Path Finding
