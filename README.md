@@ -3,8 +3,18 @@
 
 #### Demo Link: https://algo-visualizer-seven.vercel.app/
 #### Description:
-Algo Visualizer is an application that helps starter to understand the different algorithms that can be applied to sorting and searching. There are two parts to this application where One can explore path finding algorithms and also explore various sorting algorithms. 
+Welcome to Algo Visualizer. This project allows you to see how different sorting and path finding algorithms work, in a visually intuitive way.
 
+With the sorting visualizer, you can choose from a variety of algorithms such as bubble sort, quick sort and merge sort, and see how they compare in terms of speed and efficiency. Currently, customizing of size of list and range of values have not been implemented yet.
+
+Next, the path finding visualizer, on the other hand, lets you visualize how algorithms such as Dijkstra's and Depth-first search works. Use Dijkstra's to ensure shortest path first while Depth-first search does not guarantee shortest path. You can also set walls on the grid to simulate obstacles.
+
+This project is make for students who are still studying algorithms and want to find out how they work. Algo Visualizer is sure a fun and interactive way to learn, experience and explore.
+
+TODO:
+- More algorithms to be added (selection sort, A* algorithm)
+- Add weight to the path finding algorithms
+- Generate maze
 
 
 Below are the following algorithms that have visualization implemented:
@@ -21,10 +31,6 @@ Below are the following algorithms that have visualization implemented:
 | Quick sort        | Θ(n log(n))     |
 | Merge sort        | Θ(n log(n))     |
 
-##### To Do:
-- More algorithms to be added
-- Add weight to the path finding algorithms
-- Generate maze
 
 
 
