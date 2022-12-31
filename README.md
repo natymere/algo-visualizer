@@ -1,4 +1,23 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Algo Visualizer
+#### Video Demo:  <URL HERE>
+#### Description:
+Algo Visualizer is an application that helps starter to understand the different algorithms that can be applied to sorting and searching. There are two parts to this application where One can explore path finding algorithms and also explore various sorting algorithms. 
+
+Below are the following algorithms that have visualization implemented:
+##### Path Finding
+| Searching Algorithm | 
+|-------------------  |
+| Depth First Search  | 
+| Dijkstras           | 
+
+##### Sorting
+| Sorting Algorithm | Time complexity |
+|-------------------|-----------------|
+| Bubble sort       | Θ(n^2)          |
+| Quick sort        | Θ(n log(n))     |
+| Merge sort        | Θ(n log(n))     |
+
+
 
 ## Getting Started
 
