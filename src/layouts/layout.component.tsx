@@ -1,7 +1,6 @@
 import Head from 'next/head';
 import { ReactNode } from 'react';
 import Footer from './footer/footer.component';
-import styles from './layout.module.css';
 import Nav from './nav/nav.component';
 
 type Props = {

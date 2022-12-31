@@ -5,6 +5,7 @@ import styles from './sort.module.css';
 import { BarContainer } from '../components/sort/bar-container';
 import { BubbleSortAnimateTask, bubbleSortAnimation } from '../algorithms/bubblesort';
 import { quickSortAnimation } from '../algorithms/quicksort';
+import { MergeSortAnimateTask, mergeSortAnimation } from '../algorithms/mergesort';
 
 type Card = {
   speed: number;
@@ -15,7 +16,7 @@ type Card = {
 
 type CardProps = Card;
 
-const SPEED = 0.2;
+const SPEED = 20;
 const COMPARE_COLOR = 'green';
 const COMPLETE_COLOR = 'blue';
 
@@ -102,7 +103,9 @@ export default function Sort() {
       performQuickSortAnimation(domBars, animationTasks);
       setAnimation((state) => ({ ...state, isSorting: true }));
     } else if (selectedSort === 'mergesort') {
+      const { animationTasks, speed, complexity, sortName, timestamp } = mergeSortAnimation(bars);
       setAnimation((state) => ({ ...state, isSorting: true }));
+      performMergeSortAnimation(domBars, animationTasks);
     }
   }
 
@@ -131,11 +134,12 @@ export default function Sort() {
           domBars.item(task.indexB).style.height = temph;
         }, i * SPEED);
       }
-
-      window.setTimeout(() => {
-        setAnimation((state) => ({ ...state, sorting: false, isSorted: true }));
-      }, (tasks.length ? tasks.length - 1 : 0) * SPEED);
     }
+
+    // complete animation
+    window.setTimeout(() => {
+      setAnimation((state) => ({ ...state, sorting: false, isSorted: true }));
+    }, (tasks.length ? tasks.length - 1 : 0) * SPEED);
 
     window.setTimeout(() => {
       domBars.forEach((dom) => {
@@ -157,6 +161,35 @@ export default function Sort() {
           let temph = domBars.item(task.indexA).style.height;
           domBars.item(task.indexA).style.height = domBars.item(task.indexB).style.height;
           domBars.item(task.indexB).style.height = temph;
+        }, i * SPEED);
+      }
+    }
+
+    // complete animation
+    window.setTimeout(() => {
+      setAnimation((state) => ({ ...state, sorting: false, isSorted: true }));
+    }, tasks.length * SPEED);
+
+    window.setTimeout(() => {
+      domBars.forEach((dom) => {
+        dom.style.backgroundColor = COMPLETE_COLOR;
+        dom.style.opacity = '0.5';
+      });
+    }, tasks.length * SPEED);
+  }
+
+  function performMergeSortAnimation(
+    domBars: NodeListOf<HTMLElement>,
+    tasks: MergeSortAnimateTask[]
+  ) {
+    for (let i = 0; i < tasks.length; i++) {
+      const task = tasks[i];
+      if (task.action === 'compare') {
+      } else if (task.action === 'update') {
+        window.setTimeout(() => {
+          let domBar = domBars.item(task.index);
+          const relativeHeight = Math.floor((task.val / 1000) * 800);
+          domBar.style.height = relativeHeight + 'px';
         }, i * SPEED);
       }
     }

@@ -22,7 +22,7 @@ export function bubbleSort(arr: number[], animationTasks: BubbleSortAnimateTask[
 }
 
 export function bubbleSortAnimation(arr: number[]) {
-  const complexity = 'O(n^2)';
+  const complexity = 'Θ(n^2)';
   const sortName = 'Bubble Sort';
   const start = performance.now();
   let animationTasks: BubbleSortAnimateTask[] = [];
