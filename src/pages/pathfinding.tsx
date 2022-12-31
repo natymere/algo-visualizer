@@ -125,7 +125,6 @@ export default function Pathfinding() {
   };
 
   const animateVisitedNodes = (algoOption: string) => {
-    setGridState((state) => ({ ...state, isAnimating: true }));
     // get state
     const { grid, startPos, endPos } = gridState;
     const startNode = grid[startPos[1]][startPos[0]];
@@ -138,7 +137,12 @@ export default function Pathfinding() {
       paths = getShortestPath(endNode);
     } else if (algoOption === 'dfs') {
       visitedNodes = dfs(grid, startNode, endNode);
-      paths = visitedNodes;
+      paths = visitedNodes.slice(1);
+      if (paths[paths.length - 1] !== endNode) {
+        paths = [];
+      } else {
+        paths = paths.slice(0, paths.length - 1);
+      }
     }
 
     if (paths.length === 0) {
@@ -148,11 +152,11 @@ export default function Pathfinding() {
 
     const domNodes: HTMLElement[] = [];
     // animate searching effect
+    setGridState((state) => ({ ...state, isAnimating: true }));
     for (let i = 0; i < visitedNodes.length; i++) {
       const id = window.setTimeout(() => {
         const node = visitedNodes[i];
         let domNode = document.querySelector<HTMLElement>(`#row${node.row}-col${node.col}`);
-        console.log(domNode);
         if (domNode !== null) {
           const isStartNode = domNode.className.includes('startNode');
           const isEndNode = domNode.className.includes('endNode');

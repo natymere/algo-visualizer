@@ -1,6 +1,5 @@
-import Link from 'next/link';
 import React from 'react';
-import styles from './button.module.scss';
+import styles from './button.module.css';
 
 type Button = {
   type: any;

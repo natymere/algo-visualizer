@@ -10,9 +10,9 @@ export function dfs(grid: TGrid, startNode: TNode, endNode: TNode): TNode[] {
   while (unvisited.length > 0) {
     const currentNode = unvisited.pop() as TNode;
     if (currentNode.isWall) continue;
-    if (currentNode === endNode) return visitedQueue;
     currentNode.visited = true;
     visitedQueue.push(currentNode);
+    if (currentNode === endNode) return visitedQueue;
     // find neighbour nodes
     const { row, col } = currentNode;
     let neighbourNodes = [];
@@ -38,6 +38,5 @@ export function dfs(grid: TGrid, startNode: TNode, endNode: TNode): TNode[] {
       unvisited.push(n);
     }
   }
-
   return visitedQueue;
 }

@@ -1,0 +1,5 @@
+.barContainer {
+  border: 1px red solid;
+  text-align: center;
+  min-width: 1080px;
+}
