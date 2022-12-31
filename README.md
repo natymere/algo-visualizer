@@ -1,5 +1,5 @@
 # Algo Visualizer
-#### Video Demo:  <URL HERE>
+#### Video Demo:  [demo](https://www.youtube.com/watch?v=GgZ-NntpUIU)
 #### Description:
 Algo Visualizer is an application that helps starter to understand the different algorithms that can be applied to sorting and searching. There are two parts to this application where One can explore path finding algorithms and also explore various sorting algorithms. 
 
@@ -16,6 +16,12 @@ Below are the following algorithms that have visualization implemented:
 | Bubble sort       | Θ(n^2)          |
 | Quick sort        | Θ(n log(n))     |
 | Merge sort        | Θ(n log(n))     |
+
+##### To Do:
+- More algorithms to be added
+- Add weight to the path finding algorithms
+- Generate maze
+
 
 
 
